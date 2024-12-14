@@ -1,5 +1,5 @@
 
-export enum TweenTypes {
+export enum TweenType {
     LINEAR = 'linear',
     EASE_IN_QUAD = 'easeInQuad',
     EASE_OUT_QUAD = 'easeOutQuad',
@@ -32,4 +32,4 @@ export enum TweenTypes {
     EASE_OUT_BOUNCE = 'easeOutBounce',
     EASE_IN_OUT_BOUNCE = 'easeInOutBounce'
 }
-export default TweenTypes;
+export default TweenType;
