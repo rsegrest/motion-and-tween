@@ -1,4 +1,4 @@
-import p5 from 'p5';
+import p5 from "p5";
 
 const sketch = (s: p5) => {
   // Declare variables outside setup and draw
