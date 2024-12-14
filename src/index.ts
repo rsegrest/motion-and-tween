@@ -10,6 +10,7 @@ const sketch = (s: p5) => {
   };
 
   s.draw = () => {
+    console.log(s.frameCount);
     s.background(0);
     s.fill(255);
     s.rect(x, y, 50, 50);

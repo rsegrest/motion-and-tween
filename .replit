@@ -1,5 +1,5 @@
 modules = ["nodejs-20", "web"]
-run = "webpack serve"
+run = "tsc --build; webpack serve"
 
 [nix]
 channel = "stable-24_05"
