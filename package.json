@@ -8,11 +8,11 @@
     "start": "tsc --watch",
     "build": "tsc --watch; webpack --mode=debug --node-env=debug",
     "preview": "vite preview",
-    "test": "jest",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
-    "serve": "webpack serve"
+    "serve": "webpack serve",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --config ./jest.config.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",

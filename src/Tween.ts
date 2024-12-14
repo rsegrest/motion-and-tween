@@ -1,15 +1,15 @@
 import Motion, { MotionProps } from "./Motion";
 
 export interface TweenProps extends MotionProps{
-    finish:number;
-    change:number;
-    funcName:string;
+    finish?:number;
+    change?:number;
+    funcName?:string;
 }
 export interface TweenFuncParams {
-    t?:number|null;
-    begin?:number|null;
-    change?:number|null;
-    duration?:number|null;
+    t?:number|null|undefined;
+    begin?:number|null|undefined;
+    change?:number|null|undefined;
+    duration?:number|null|undefined;
 }
 
 export class Tween extends Motion {

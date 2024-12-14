@@ -1,18 +1,20 @@
 import Motion from "../Motion";
 
-describe('Motion', () => {
-    it('should do some motion', () => {
+describe("Motion", () => {
+    it("should do some motion", () => {
         const props = {
             obj: {},
-            prop: 'blah',
+            prop: "blah",
             begin: 0,
             duration: 1,
             useSeconds: false,
-        }
+        };
         const motion = new Motion(props);
         expect(motion).toBeInstanceOf(Motion);
-        expect(motion.toString()).toBe("Motion[obj={}, prop='blah', begin=0, duration=1, useSeconds=false]");
-    })
+        expect(motion.toString()).toBe(
+            'Motion[obj={}, prop="blah", begin=0, duration=1, useSeconds=false]',
+        );
+    });
     // start
 
     // rewind
@@ -42,6 +44,6 @@ describe('Motion', () => {
     // getUseSeconds
     // update
     // removeListener
-    
+
     // onEnterFrame() ???
 });

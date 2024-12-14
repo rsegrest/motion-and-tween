@@ -7,9 +7,9 @@ import { type TweenFuncParams } from "./Tween";
 export interface MotionProps {
     obj:any;
     prop:string;
-    begin:number;
-    duration:number;
-    useSeconds:boolean;
+    begin?:number;
+    duration?:number;
+    useSeconds?:boolean;
 }
 export class Motion {
     protected obj:any;
@@ -167,6 +167,7 @@ export class Motion {
         console.log('update', parameters);
         const pos = this.getPosition(this._time);
         this.setPosition(pos);
+        return this.obj;
     }
     
     protected removeListener(listener:any) {

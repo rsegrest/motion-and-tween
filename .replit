@@ -5,6 +5,10 @@ run = "tsc --build; webpack serve"
 channel = "stable-24_05"
 
 [[ports]]
+localPort = 5500
+externalPort = 80
+
+[[ports]]
 localPort = 8080
 externalPort = 8080
 

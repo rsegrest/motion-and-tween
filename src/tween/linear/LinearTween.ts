@@ -1,25 +1,40 @@
 import Tween, { TweenFuncParams, TweenProps } from "../../Tween";
 
 export class LinearTween extends Tween {
-    constructor(params:TweenProps) {
+    constructor(params: TweenProps) {
         super({
             ...params,
-            funcName: "LinearTween", 
+            funcName: "LinearTween",
         });
     }
+    // TODO: Record t in _time?
     update({
-        t = this._time,
-        begin = this._begin,
-        change = this._change,
-        duration = this._duration
-    }:TweenFuncParams):number {
+        t,
+        begin,
+        change,
+        duration,
+    }: TweenFuncParams | undefined): Object {
+        if (!t) {
+            t = this._time;
+        }
+        if (!begin) {
+            begin = this._begin;
+        }
+        if (!change) {
+            change = this._change;
+        }
+        if (!duration) {
+            duration = this._duration;
+        }
         if (t! > duration!) {
             this.isComplete = true;
             return this.finish;
         }
-        return (
-            ((change || 0)*t!/duration! + begin!)
-        );
+        // return t;
+
+        const newValue = begin! + (change! * t!) / duration!;
+        this.obj[this.prop] = newValue;
+        return this.obj;
     }
 }
 export default LinearTween;
