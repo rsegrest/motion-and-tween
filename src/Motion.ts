@@ -164,6 +164,7 @@ export class Motion {
     }
     // To be overridden -- could be abstract
     protected update(parameters?:TweenFuncParams|undefined) {
+        console.log('update', parameters);
         const pos = this.getPosition(this._time);
         this.setPosition(pos);
     }
