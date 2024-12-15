@@ -1,8 +1,9 @@
 TODO: Make sure "t" in Tween is 0-based (unit test)
-TODO: Is duration the total time for the tween
 TODO: "useFrames" like "useSeconds"? or just timeScaleUnits
-TODO: Update constructors in all Tween subclasses
-TODO: Fix update() in all Tween classes
-TODO: Update member variables names in all Tween subclasses
 TODO: Wrapper for p5.js Shapes
 TODO: Wrapper for Sprites in System77
+
+DONE:
+ - Update constructors in all Tween subclasses
+ - Fix update() in all Tween classes
+ - Update member variables names in all Tween subclasses
