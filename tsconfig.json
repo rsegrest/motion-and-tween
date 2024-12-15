@@ -9,7 +9,8 @@
     "moduleResolution": "node",
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "declaration": true,
   },
   "files": ["src/index.ts"],
   "include": ["src"],

@@ -1,9 +1,30 @@
 TODO: Make sure "t" in Tween is 0-based (unit test)
 TODO: "useFrames" like "useSeconds"? or just timeScaleUnits
+
+IN SYSTEM77:
 TODO: Wrapper for p5.js Shapes
 TODO: Wrapper for Sprites in System77
 TODO: Use screen percentages?
 
+FOR NPM (tsconfig.json):
+  "compilerOptions": {
+    "target": "es6",
+*** "module": "commonjs",***
+    // ...
+  }
+*. Test Locally:
+    * Before publishing, you might want to test if your library works as expected. You can use npm link to link your library to another project for testing:
+    * > npm link
+    * In another project folder, link to your library:
+    * > npm link <your-package-name>
+*. Publish to npm:
+    * Ensure you're logged into npm:
+    * > npm login
+    * Publish your package:
+    * > npm publish
+
+
+OTHER:
 // __Motion.ts:
 // public setUseSeconds(b:boolean) {
 //     this.useSeconds = b;

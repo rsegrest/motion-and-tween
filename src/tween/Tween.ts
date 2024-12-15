@@ -38,8 +38,7 @@ export class Tween extends Motion {
             obj: params.obj,
             propertyToChange: params.propertyToChange,
             beginValue: params.beginValue,
-            actionDuration: params.actionDuration,
-            useSeconds: params.useSeconds});
+            actionDuration: params.actionDuration});
         if (params.hasOwnProperty('valueChange')) {
             this._valueChange = (params as TweenChangeProps).valueChange;
             this._finishValue = this._beginValue + this._valueChange;
@@ -103,7 +102,7 @@ export class Tween extends Motion {
         params:TweenAtTimeParams|undefined|null = null,
         tweenAlgo:Function|null = null
     ) {
-        let newParams = this.setParams(params);
+        let newParams = this.expandParams(params);
         if (tweenAlgo) {
             const newValue = tweenAlgo(newParams);
             if (!this.checkIfFinished(
@@ -149,12 +148,12 @@ export class Tween extends Motion {
         this.setBegin(this.getPosition());
         this.setFinish(finish);
         if (!interimDuration) {
-            this.setDuration(interimDuration);
+            this.setActionDuration(interimDuration);
         }
         this.start();
     }
     yoyo() {
-        this.continueTo(this.getBegin(),this.getDuration());
+        this.continueTo(this.getBegin(),this.getActionDuration());
     }
     // TODO: Verify
     getPosition(t?:number) {

@@ -1,28 +1,33 @@
-import Tween, { TweenAtTimeParams, TweenChangeProps } from "../Tween";
+import Tween, {
+    TweenAlgorithmParams,
+    TweenAtTimeParams,
+    TweenChangeProps,
+} from "../Tween";
 
 export class EaseInOutCircularTween extends Tween {
-    constructor(params:TweenChangeProps) {
-        super(params,
-            "EaseInOutCircularTween", 
-        );
+    constructor(params: TweenChangeProps) {
+        super(params, "EaseInOutCircularTween");
     }
-    update(params:TweenAtTimeParams):(typeof this.obj) {
-        const newParams = this.setParams(params);
-        let { nextT, beginValue, valueChange, actionDuration: duration} = newParams;
-        // super.update({ t: nextT })
+    tweenAlgorithm(params: TweenAlgorithmParams): number {
+        let { nextT, beginValue, valueChange, actionDuration } = params;
+        let timeStep = nextT / (actionDuration / 2);
         let newValue;
 
-        if (nextT/duration <= 0.5) {
-            const timeStep = (nextT/(duration/2))
-            newValue = (valueChange/2) * (1-Math.sqrt(1-Math.pow(timeStep,2))) + beginValue;
+        if (timeStep <= 1) {
+            // const timeStep = nextT / (actionDuration / 2);
+            newValue =
+                (valueChange / 2) * (1 - Math.sqrt(1 - Math.pow(timeStep, 2))) +
+                beginValue;
         } else {
-            const timeStep = (nextT/(duration))
-            newValue = (valueChange/2) * (Math.sqrt(1 - Math.pow(timeStep,2))) + (beginValue + (valueChange/2));
+            timeStep = timeStep - 2;
+            newValue =
+                (valueChange / 2) * Math.sqrt(1 - Math.pow(timeStep, 2)) +
+                (beginValue + valueChange / 2);
         }
-        if (!this.checkIfFinished(nextT,duration)) {
-            this.obj[this.propertyToChange] = newValue;
-        }
-        return this.obj;
+        return newValue;
+    }
+    update(params: TweenAtTimeParams | null = null): typeof this.obj {
+        return super.update(params, this.tweenAlgorithm);
     }
 }
 export default EaseInOutCircularTween;

@@ -12,7 +12,6 @@ export class EaseInCircularTween extends Tween {
         let {nextT, beginValue, valueChange, actionDuration: duration} = params;
         const timeStep = (nextT/duration);
         const newValue = valueChange * (1-(Math.sqrt(1-Math.pow(timeStep,2)))) + beginValue;
-        // const newValue = beginValue + (valueChange * nextT) / duration;
         return newValue;
     }
     update(

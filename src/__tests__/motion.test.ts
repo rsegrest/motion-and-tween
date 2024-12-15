@@ -7,7 +7,6 @@ describe("Motion", () => {
             propertyToChange: "blah",
             beginValue: 0,
             actionDuration: 1,
-            useSeconds: false,
         };
         const motion = new Motion(props);
         expect(motion).toBeInstanceOf(Motion);
