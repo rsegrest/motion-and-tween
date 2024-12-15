@@ -418,7 +418,7 @@ describe("Tween", () => {
                 valueChange: 10,
             };
             let easeInOutExponentialTween: EaseInOutExponentialTween =
-                new EaseInOutExponentialTween(tp);
+                new EaseInOutExponentialTween(tp);  
             expect(easeInOutExponentialTween).toBeDefined();
             let returnedObj = easeInOutExponentialTween.getObj();
             expect(returnedObj).toBeDefined();

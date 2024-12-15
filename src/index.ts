@@ -16,6 +16,21 @@ import {
   EaseInOutExponentialTween,
   EaseOutExponentialTween,
 } from "./tween/exponential";
+import {
+  EaseInOutQuadraticTween,
+  EaseInQuadraticTween,
+  EaseOutQuadraticTween,
+} from "./tween/quadratic";
+import {
+  EaseInOutQuinticTween,
+  EaseInQuinticTween,
+  EaseOutQuinticTween,
+} from "./tween/quintic";
+import {
+  EaseInOutSinusoidalTween,
+  EaseInSinusoidalTween,
+  EaseOutSinusoidalTween,
+} from "./tween/sinusoidal";
 // import { EaseInCircularTween } from "./tween/circular";
 
 class Rectangle {
@@ -33,19 +48,31 @@ const sketch = (s: p5) => {
   // let x = 100;
   // let y = 100;
 
-  let linearTween: LinearTween;
+  // let linearTween: LinearTween;
 
-  let easeInCirc: EaseInCircularTween;
-  let easeOutCirc: EaseOutCircularTween;
-  let easeInOutCirc: EaseInOutCircularTween;
+  // let easeInCirc: EaseInCircularTween;
+  // let easeOutCirc: EaseOutCircularTween;
+  // let easeInOutCirc: EaseInOutCircularTween;
 
-  let easeInCubic: EaseInCubicTween;
-  let easeOutCubic: EaseOutCubicTween;
-  let easeInOutCubic: EaseInOutCubicTween;
+  // let easeInCubic: EaseInCubicTween;
+  // let easeOutCubic: EaseOutCubicTween;
+  // let easeInOutCubic: EaseInOutCubicTween;
 
-  let easeInExpo: EaseInExponentialTween;
-  let easeOutExpo: EaseOutExponentialTween;
-  let easeInOutExpo: EaseInOutExponentialTween;
+  // let easeInExpo: EaseInExponentialTween;
+  // let easeOutExpo: EaseOutExponentialTween;
+  // let easeInOutExpo: EaseInOutExponentialTween;
+
+  // let easeInQuadratic: EaseInQuadraticTween;
+  // let easeOutQuadratic: EaseOutQuadraticTween
+  // let easeInOutQuadratic: EaseInOutQuadraticTween;
+
+  // let easeInQuintic: EaseInQuinticTween;
+  // let easeOutQuintic: EaseOutQuinticTween
+  // let easeInOutQuintic: EaseInOutQuinticTween;
+
+  let easeInSinusoidalTween: EaseInSinusoidalTween;
+  let easeOutSinusoidalTween: EaseOutSinusoidalTween;
+  let easeInOutSinusoidalTween: EaseInOutSinusoidalTween;
 
   let tp1: TweenChangeProps;
   let tp2: TweenChangeProps;
@@ -89,18 +116,29 @@ const sketch = (s: p5) => {
     // easeOutCirc = new EaseOutCircularTween(tp2);
     // easeInOutCirc = new EaseInOutCircularTween(tp3);
 
-    easeInExpo = new EaseInExponentialTween(tp1);
-    easeOutExpo = new EaseOutExponentialTween(tp2);
-    easeInOutExpo = new EaseInOutExponentialTween(tp3);
+    // easeInExpo = new EaseInExponentialTween(tp1);
+    // easeOutExpo = new EaseOutExponentialTween(tp2);
+    // easeInOutExpo = new EaseInOutExponentialTween(tp3);
+    // easeInQuadratic = new EaseInQuadraticTween(tp1);
+    // easeOutQuadratic = new EaseOutQuadraticTween(tp2)
+    // easeInOutQuadratic = new EaseInOutQuadraticTween(tp3);
+
+    // easeInQuintic = new EaseInQuinticTween(tp1);
+    // easeOutQuintic = new EaseOutQuinticTween(tp2);
+    // easeInOutQuintic = new EaseInOutQuinticTween(tp3);
+
+    easeInSinusoidalTween = new EaseInSinusoidalTween(tp1);
+    easeOutSinusoidalTween = new EaseOutSinusoidalTween(tp2);
+    easeInOutSinusoidalTween = new EaseInOutSinusoidalTween(tp3);
   };
 
   s.draw = () => {
     s.background(0);
     s.fill(255);
     // const r = linearTween.update() as Rectangle;
-    r1 = easeInExpo.update() as Rectangle;
-    r2 = easeOutExpo.update() as Rectangle;
-    r3 = easeInOutExpo.update() as Rectangle;
+    r1 = easeInSinusoidalTween.update() as Rectangle;
+    r2 = easeOutSinusoidalTween.update() as Rectangle;
+    r3 = easeInOutSinusoidalTween.update() as Rectangle;
     // s.rect(r.x, r.y, r.w, r.h)
     // console.log(r2)
     s.rect(r1.x, r1.y, r1.w, r1.h);

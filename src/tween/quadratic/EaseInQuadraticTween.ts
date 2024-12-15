@@ -13,7 +13,7 @@ export class EaseInQuadraticTween extends Tween {
         return newValue;
     }
     update(
-        params:TweenAtTimeParams,
+        params:TweenAtTimeParams|null = null,
     ):(typeof this.obj) {
         return super.update(params,this.tweenAlgorithm)
     }
