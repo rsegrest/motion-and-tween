@@ -1,6 +1,6 @@
 import p5 from "p5";
 import LinearTween from "./tween/linear/LinearTween";
-import { TweenChangeProps } from "./Tween";
+import { TweenChangeProps } from "./tween/Tween";
 
 class Rectangle {
   public x:number = 10;
@@ -38,7 +38,6 @@ const sketch = (s: p5) => {
   };
 
   s.draw = () => {
-    // console.log(s.frameCount);
     s.background(0);
     s.fill(255);
     const r = linearTween.update() as Rectangle;

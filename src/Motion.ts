@@ -2,7 +2,7 @@
 
 import ActionScriptTimer from "./ASTimer";
 import Position from "./Position";
-import { type TweenAtTimeParams } from "./Tween";
+import { type TweenAtTimeParams } from "./tween/Tween";
 
 export interface MotionProps {
     obj:any;
@@ -166,10 +166,13 @@ export class Motion {
         return this.useSeconds;
     }
     // To be overridden -- could be abstract
-    protected update(parameters?:TweenAtTimeParams|undefined):typeof this.obj {
-        console.log('update', parameters);
+    protected update(
+        params:TweenAtTimeParams|undefined|null=null,
+        updateAlgorithm:Function|null|undefined=null,
+    ):(typeof this.obj) {
         const pos = this.getPosition(this._currentTime);
         this.setPosition(pos);
+        this._currentTime = params.t;
         return this.obj;
     }
     protected removeListener(listener:any) {

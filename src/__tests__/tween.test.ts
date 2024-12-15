@@ -1,5 +1,5 @@
 import { MotionProps } from "../Motion";
-import { TweenAtTimeParams, TweenChangeProps } from "../Tween";
+import { TweenChangeProps } from "../tween/Tween";
 import LinearTween from "../tween/linear/LinearTween";
 import { EaseInCircularTween, EaseOutCircularTween, EaseInOutCircularTween } from "../tween/circular/";
 import { EaseInCubicTween, EaseOutCubicTween, EaseInOutCubicTween} from "../tween/cubic";

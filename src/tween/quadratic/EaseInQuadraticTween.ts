@@ -1,4 +1,4 @@
-import Tween, { TweenAtTimeParams, TweenChangeProps } from "../../Tween";
+import Tween, { TweenAtTimeParams, TweenChangeProps } from "../Tween";
 
 export class EaseInQuadraticTween extends Tween {
     constructor(params:TweenChangeProps) {
@@ -8,14 +8,10 @@ export class EaseInQuadraticTween extends Tween {
     }
     update(
         params:TweenAtTimeParams,
-        doThrow:boolean = false,
     ):(typeof this.obj) {
         const newParams = this.setParams(params);
-        if (doThrow) {
-            throw(newParams);
-        }
-        let { lastT, nextT, beginValue, valueChange, actionDuration } = newParams;
-        super.update({ t: nextT })
+        let { nextT, beginValue, valueChange, actionDuration } = newParams;
+        // super.update({ t: nextT })
 
         const timeStep = nextT/actionDuration;
         const newValue = valueChange*(Math.pow(timeStep,2)) + beginValue

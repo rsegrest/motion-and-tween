@@ -1,4 +1,4 @@
-import Tween, { TweenAtTimeParams, TweenChangeProps } from "../../Tween";
+import Tween, { TweenAtTimeParams, TweenChangeProps } from "../Tween";
 
 export class EaseInOutSinusoidalTween extends Tween {
     constructor(params:TweenChangeProps) {
@@ -9,15 +9,10 @@ export class EaseInOutSinusoidalTween extends Tween {
 
     update(
         params:TweenAtTimeParams,
-        doThrow:boolean = false,
     ):(typeof this.obj) {
         const newParams = this.setParams(params);
-        if (doThrow) {
-            throw(newParams);
-        }
-        let { lastT, nextT, beginValue, valueChange, actionDuration } = newParams;
-        super.update({ t: nextT })
-        // let timeStep = nextT/(actionDuration/2)
+        let { nextT, beginValue, valueChange, actionDuration } = newParams;
+        // super.update({ t: nextT })
         let newValue = (valueChange/2) * (1-(Math.cos(Math.PI*(nextT/actionDuration)))) + beginValue;
 
         if (!this.checkIfFinished(nextT, actionDuration)) {
@@ -25,6 +20,5 @@ export class EaseInOutSinusoidalTween extends Tween {
         }
         return this.obj;
     }
-    // return change!/2 * (1 - Math.cos(Math.PI*t!/duration!)) + begin!;
 }
 export default EaseInOutSinusoidalTween;

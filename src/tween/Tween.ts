@@ -1,10 +1,17 @@
-import Motion, { MotionProps } from "./Motion";
+import Motion, { MotionProps } from "../Motion";
 
 export interface TweenChangeProps extends MotionProps {
     valueChange?:number|undefined;
 }
 export interface TweenFinishProps extends MotionProps {
     finishValue?:number|undefined;
+}
+export interface TweenAlgorithmParams {
+    nextT?: number|null;
+    lastT?: number|null|undefined;
+    beginValue?: number|null|undefined;
+    valueChange?: number|null|undefined;
+    actionDuration?: number|null|undefined;
 }
 export interface TweenAtTimeParams {
     t:number|null|undefined;
@@ -85,15 +92,30 @@ export class Tween extends Motion {
         }
         return { lastT, nextT, beginValue, valueChange, actionDuration };
     }
-    public update(params:{
-        t:number,
-        // beginValue:number,
-        // valueChange:number,
-        // duration:number
-    }) {
-        this._currentTime = params.t;
-    }
+    public update(
+        params:TweenAtTimeParams,
+        tweenAlgo:Function
+    ) {
 
+        let newParams = this.setParams(params);
+        this._currentTime = params.t;
+        const newValue = this.tweenAlgorithm(newParams);
+        
+        super.update({ t: newParams.nextT })
+        
+        if (!this.checkIfFinished(
+            newParams.nextT,
+            newParams.actionDuration
+        )) {
+            this.obj[this.propertyToChange] = newValue;
+        }
+        return this.obj;
+    }
+    // override
+    tweenAlgorithm(params:TweenAlgorithmParams):number {
+        let newValue = 0;
+        return newValue;
+    }
     checkIfFinished(t:number,actionDuration:number):boolean {
         if (t > actionDuration) {
             this.isComplete = true;
