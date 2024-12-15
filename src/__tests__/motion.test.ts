@@ -1,18 +1,18 @@
-import Motion from "../Motion";
+import Motion, { MotionProps } from "../Motion";
 
 describe("Motion", () => {
     it("should do some motion", () => {
-        const props = {
+        const props:MotionProps = {
             obj: {},
-            prop: "blah",
-            begin: 0,
-            duration: 1,
+            propertyToChange: "blah",
+            beginValue: 0,
+            actionDuration: 1,
             useSeconds: false,
         };
         const motion = new Motion(props);
         expect(motion).toBeInstanceOf(Motion);
         expect(motion.toString()).toBe(
-            'Motion[obj={}, prop="blah", begin=0, duration=1, useSeconds=false]',
+            'Motion[obj={}, prop="blah", _beginValue=0, _duration=1, useSeconds=false]',
         );
     });
     // start

@@ -1,6 +1,6 @@
 import p5 from "p5";
 import LinearTween from "./tween/linear/LinearTween";
-import { TweenProps } from "./Tween";
+import { TweenChangeProps } from "./Tween";
 
 class Rectangle {
   public x:number = 10;
@@ -8,6 +8,9 @@ class Rectangle {
   public w:number = 50;
   public h:number = 50;
 }
+console.log('width, height:')
+console.log(window.innerWidth);
+console.log(window.innerHeight);
 
 const sketch = (s: p5) => {
   // Declare variables outside setup and draw
@@ -15,7 +18,7 @@ const sketch = (s: p5) => {
   let y = 100;
 
   let linearTween:LinearTween;
-  let tp:TweenProps;
+  let tp:TweenChangeProps;
   let rect:any;
 
   s.setup = () => {
@@ -24,20 +27,22 @@ const sketch = (s: p5) => {
     rect = new Rectangle();
     tp = {
       obj: rect,
-      prop: 'x',
-      begin: 0,
-      duration: 1000,
+      propertyToChange: 'x',
+      beginValue: 10,
+      // finishValue: 10,
+      valueChange: 20,
+      actionDuration: 10,
       useSeconds: false,
     }
     linearTween = new LinearTween(tp);
   };
 
   s.draw = () => {
-    console.log(s.frameCount);
+    // console.log(s.frameCount);
     s.background(0);
     s.fill(255);
-    const r = linearTween.update({}) as Rectangle;
-    s.rect(r.x, r.y, r.w, r.h)
+    const r = linearTween.update() as Rectangle;
+    // s.rect(r.x, r.y, r.w, r.h)
   };
 };
 

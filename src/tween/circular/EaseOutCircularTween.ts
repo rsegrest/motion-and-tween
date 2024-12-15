@@ -1,25 +1,30 @@
-import Tween, { TweenFuncParams, TweenProps } from "../../Tween";
+import Tween, { TweenAtTimeParams, TweenChangeProps } from "../../Tween";
 
 export class EaseOutCircularTween extends Tween {
-    constructor(params:TweenProps) {
-        super({
-            ...params,
-            funcName: "EaseOutCircularTween", 
-        });
+    constructor(params:TweenChangeProps) {
+        super(
+            params,
+            "EaseOutCircularTween", 
+        );
     }
-    update({
-        t = this._time,
-        begin = this._begin,
-        change = this._change,
-        duration = this._duration
-    }:TweenFuncParams):number {
-        
-        if (t! > duration!) {
-            this.isComplete = true;
-            return this.finish;
+    update(
+        params:TweenAtTimeParams,
+        doThrow:boolean = false
+    ):(typeof this.obj) {
+        const newParams = this.setParams(params);
+        if (doThrow) {
+            throw(newParams);
         }
-        let newT = (t!/duration!-1);
-        return (change||0) * Math.sqrt(1 - newT*newT) + begin!;
+        let {lastT, nextT, beginValue, valueChange, actionDuration: duration} = newParams;
+        super.update({ t: nextT })
+        const timeStep = (nextT/duration)-1
+        // throw(timeStep);
+        const newValue = valueChange * Math.sqrt(1 - ((timeStep)*timeStep)) + beginValue;
+
+        if (!this.checkIfFinished(nextT,duration)) {
+            this.obj[this.propertyToChange] = newValue;
+        }
+        return this.obj;
     }
 }
 export default EaseOutCircularTween;

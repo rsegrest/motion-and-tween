@@ -5,14 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "start": "tsc --watch",
-    "build": "tsc --watch; webpack --mode=debug --node-env=debug",
+    "start": "tsc --watch; webpack serve ./dist/index.html",
+    "build": "tsc --watch; webpack --mode=development serve",
     "preview": "vite preview",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch",
+    "watch": "tsc --watch; webpack --watch",
     "serve": "webpack serve",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --config ./jest.config.ts"
+    "test": "tsc; cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --config ./jest.config.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
