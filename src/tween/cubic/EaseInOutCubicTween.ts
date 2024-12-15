@@ -15,9 +15,6 @@ export class EaseInOutCubicTween extends Tween {
         } else {
             newValue = (valueChange/2)*(Math.pow((timeStep-2),3)+2)+beginValue
         }
-        if (!this.checkIfFinished(nextT, actionDuration)) {
-            this.obj[this.propertyToChange] = newValue;
-        }
         return newValue;
     }
     update(

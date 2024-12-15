@@ -16,6 +16,7 @@ export class LinearTween extends Tween {
     update(
         params: TweenAtTimeParams|null|undefined = null,
     ): (typeof this.obj) {
+        console.log('update linear')
         return super.update(params,this.tweenAlgorithm)
     }
 }

@@ -44,6 +44,8 @@ describe("Tween", () => {
         expect(valueChange).toBe(12);
     })
 
+    
+
     describe('Linear Tweening algorithm', () => {
         it("should tween linearly", () => { 
             let rect: Rectangle = new Rectangle();
@@ -72,7 +74,33 @@ describe("Tween", () => {
             r = linearTween.update({t: 11});
             expect(r.x).toBe(15);
         });
-
+        it("should automatically update time, internally", () => { 
+            let rect: Rectangle = new Rectangle();
+            let mp: MotionProps = {
+                obj: rect,
+                propertyToChange: "x",
+                beginValue: 5,
+                actionDuration: 10,
+                useSeconds: false,
+            };
+            let tp: TweenChangeProps = {
+                ...mp,
+                valueChange: 10
+            }
+            let linearTween: LinearTween = new LinearTween(tp);
+            expect(linearTween).toBeDefined();
+            expect(linearTween.toString()).toBe("Tween[Motion[obj={\"x\":5,\"y\":10,\"w\":50,\"h\":50}, prop=\"x\", _beginValue=5, _duration=10, useSeconds=false], funcName: LinearTween, _valueChange: 10, _finishValue: 15, isComplete: false]");
+            expect(rect.toString()).toBe("Rectangle[x=5, y=10, w=50, h=50]");
+            let r;
+            r = linearTween.update();
+            // expect(r.x).toBe(6);
+            r = linearTween.update();
+            // expect(r.x).toBe(7);
+            r = linearTween.update();
+            expect(r.x).toBe(8);
+            r = linearTween.update();
+            expect(r.x).toBe(9);
+        });
     })
     describe('Circular Tweening algorithms', () => {
         it("should do an ease-in circular tween", () => { 

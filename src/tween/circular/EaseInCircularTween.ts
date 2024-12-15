@@ -1,4 +1,4 @@
-import Tween, { TweenAtTimeParams, TweenChangeProps } from "../Tween";
+import Tween, { TweenAlgorithmParams, TweenAtTimeParams, TweenChangeProps } from "../Tween";
 
 export class EaseInCircularTween extends Tween {
     constructor(params:TweenChangeProps) {
@@ -7,20 +7,19 @@ export class EaseInCircularTween extends Tween {
             "EaseInCircularTween", 
         );
     }
-    update(
-        params:TweenAtTimeParams,
-    ):(typeof this.obj) {
-        const newParams = this.setParams(params);
-        let {nextT, beginValue, valueChange, actionDuration: duration} = newParams;
-        // super.update({ t: nextT })
-        
+
+    tweenAlgorithm(params:TweenAlgorithmParams):number {
+        let {nextT, beginValue, valueChange, actionDuration: duration} = params;
         const timeStep = (nextT/duration);
         const newValue = valueChange * (1-(Math.sqrt(1-Math.pow(timeStep,2)))) + beginValue;
-
-        if (!this.checkIfFinished(nextT,duration)) {
-            this.obj[this.propertyToChange] = newValue;
-        }
-        return this.obj;
+        // const newValue = beginValue + (valueChange * nextT) / duration;
+        return newValue;
+    }
+    update(
+        params: TweenAtTimeParams|null|undefined = null,
+    ): (typeof this.obj) {
+        console.log('update ease-in-circular')
+        return super.update(params,this.tweenAlgorithm)
     }
 }
 export default EaseInCircularTween;

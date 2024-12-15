@@ -2,7 +2,7 @@
 
 import ActionScriptTimer from "./ASTimer";
 import Position from "./Position";
-import { type TweenAtTimeParams } from "./tween/Tween";
+import { TweenForDurationParams, type TweenAtTimeParams } from "./tween/Tween";
 
 export interface MotionProps {
     obj:any;
@@ -10,6 +10,7 @@ export interface MotionProps {
     beginValue?:number;
     actionDuration?:number;
     useSeconds?:boolean;
+    valueChange?:number|null;
 }
 export class Motion {
     protected obj:any;
@@ -23,6 +24,7 @@ export class Motion {
     protected _pos:any;
     protected _isLooping:boolean = false;
     protected _startTime:number;
+    protected _valueChange:number|null = null;
 
     protected asTimer = new ActionScriptTimer();
 
@@ -32,6 +34,7 @@ export class Motion {
         beginValue,
         actionDuration,
         useSeconds,
+        valueChange,
     }:MotionProps) {
         this.obj = obj;
         this.propertyToChange = propertyToChange;
@@ -45,6 +48,7 @@ export class Motion {
         this._prevPos = null;
         this._pos = beginValue;
         this._startTime = ActionScriptTimer.getElapsedTime();
+        this._valueChange = valueChange;
     }
     public getElapsedTime() {
         return ActionScriptTimer.getElapsedTime();
@@ -97,7 +101,7 @@ export class Motion {
     
     public getPosition(t?:number):Position {
         throw('not yet implemented -- use update')
-       // calculate and return position
+        // calculate and return position
         //    console.log('getPosition', t)
         //    return new Position(0,0);
     }
@@ -159,20 +163,52 @@ export class Motion {
     public getProp() {
         return this.propertyToChange;
     }
-    public setUseSeconds(b:boolean) {
-        this.useSeconds = b;
+    public setParams(
+        params:null|undefined|TweenAtTimeParams|TweenForDurationParams = null,
+    ):{
+        lastT:number,
+        nextT:number,
+        beginValue:number,
+        valueChange:number,
+        actionDuration:number,
+    } {
+        let lastT, nextT, beginValue, valueChange, actionDuration;
+        if (params) {
+            if (params.beginValue) beginValue = params.beginValue;
+            if (params.valueChange) valueChange = params.valueChange;
+        }
+        lastT = this._currentTime;
+        if (!params) {
+            lastT = this._currentTime;
+            nextT = this._currentTime + 1;
+            beginValue = this._beginValue;
+            valueChange = this._valueChange;
+            actionDuration = this._actionDuration;
+        } else {
+            if (params.hasOwnProperty('t')) {
+                nextT = (params as TweenAtTimeParams).t;
+            }
+            if (!beginValue) {
+                beginValue = this._beginValue;
+            }
+            if (!valueChange) {
+                valueChange = this._valueChange;
+            }
+            if (!actionDuration) {
+                actionDuration = this._actionDuration;
+            }
+        }
+        return { lastT, nextT, beginValue, valueChange, actionDuration };
     }
-    public getUseSeconds() {
-        return this.useSeconds;
-    }
-    // To be overridden -- could be abstract
+    // Override this method
     protected update(
         params:TweenAtTimeParams|undefined|null=null,
-        updateAlgorithm:Function|null|undefined=null,
     ):(typeof this.obj) {
-        const pos = this.getPosition(this._currentTime);
-        this.setPosition(pos);
-        this._currentTime = params.t;
+        if (params) {
+            this._currentTime = params.t;
+        } else {
+            this._currentTime += 1;
+        }
         return this.obj;
     }
     protected removeListener(listener:any) {

@@ -2,6 +2,15 @@ TODO: Make sure "t" in Tween is 0-based (unit test)
 TODO: "useFrames" like "useSeconds"? or just timeScaleUnits
 TODO: Wrapper for p5.js Shapes
 TODO: Wrapper for Sprites in System77
+TODO: Use screen percentages?
+
+// __Motion.ts:
+// public setUseSeconds(b:boolean) {
+//     this.useSeconds = b;
+// }
+// public getUseSeconds() {
+//     return this.useSeconds;
+// }
 
 DONE:
  - Update constructors in all Tween subclasses
