@@ -1,12 +1,25 @@
-TODO: Make sure "t" in Tween is 0-based (unit test)
-TODO: "useFrames" like "useSeconds"? or just timeScaleUnits
+
+
 
 IN SYSTEM77:
 TODO: Wrapper for p5.js Shapes
 TODO: Wrapper for Sprites in System77
 TODO: Use screen percentages?
 
+NEXT Version:
+TODO: Make sure "t" in Tween is 0-based (unit test)
+TODO: "useFrames" like "useSeconds"? or just timeScaleUnits
+
+
 FOR NPM (tsconfig.json):
+checkout main branch -- move original configuration files to new folder (configuration)
+new branch from latest: (instance-mode -> testing-w-p5-js)
+merge latest into master
+overwrite "instance-mode" configuration with original
+do the following: -- then fork new project called "ts-motion-and-tween" (p5.js no longer tied to project)
+ - use npm library with testing-w-p5-js branch to animate p5.js
+
+
   "compilerOptions": {
     "target": "es6",
 *** "module": "commonjs",***
