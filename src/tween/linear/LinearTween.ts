@@ -17,17 +17,6 @@ export class LinearTween extends Tween {
         params: TweenAtTimeParams|null|undefined = null,
     ): (typeof this.obj) {
         return super.update(params,this.tweenAlgorithm)
-        // let newParams = this.setParams(params);
-        // const newValue = this.tweenAlgorithm(newParams);
-        // super.update({ t: newParams.nextT })
-        
-        // if (!this.checkIfFinished(
-        //     newParams.nextT,
-        //     newParams.actionDuration
-        // )) {
-        //     this.obj[this.propertyToChange] = newValue;
-        // }
-        // return this.obj;
     }
 }
 export default LinearTween;

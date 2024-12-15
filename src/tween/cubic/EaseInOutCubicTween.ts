@@ -1,4 +1,4 @@
-import Tween, { TweenAtTimeParams, TweenChangeProps } from "../Tween";
+import Tween, { TweenAlgorithmParams, TweenAtTimeParams, TweenChangeProps } from "../Tween";
 
 export class EaseInOutCubicTween extends Tween {
     constructor(params:TweenChangeProps) {
@@ -6,13 +6,8 @@ export class EaseInOutCubicTween extends Tween {
             "EaseInOutCubicTween", 
         );
     }
-    update(
-        params:TweenAtTimeParams,
-    ):(typeof this.obj) {
-        const newParams = this.setParams(params);
-        let { nextT, beginValue, valueChange, actionDuration } = newParams;
-        // super.update({ t: nextT })
-
+    tweenAlgorithm(params:TweenAlgorithmParams):number {
+        let {nextT, beginValue, valueChange, actionDuration} = params;
         let newValue;
         let timeStep = nextT/(actionDuration/2)
         if (timeStep < 1) {
@@ -23,7 +18,12 @@ export class EaseInOutCubicTween extends Tween {
         if (!this.checkIfFinished(nextT, actionDuration)) {
             this.obj[this.propertyToChange] = newValue;
         }
-        return this.obj;
+        return newValue;
+    }
+    update(
+        params:TweenAtTimeParams,
+    ):(typeof this.obj) {
+        return super.update(params,this.tweenAlgorithm)
     }
 }
 export default EaseInOutCubicTween;

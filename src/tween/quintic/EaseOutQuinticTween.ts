@@ -1,4 +1,4 @@
-import Tween, { TweenAtTimeParams, TweenChangeProps } from "../Tween";
+import Tween, { TweenAlgorithmParams, TweenAtTimeParams, TweenChangeProps } from "../Tween";
 
 export class EaseOutQuinticTween extends Tween {
     constructor(params:TweenChangeProps) {
@@ -6,18 +6,16 @@ export class EaseOutQuinticTween extends Tween {
             "EaseOutQuinticTween", 
         );
     }
+    
+    tweenAlgorithm(params:TweenAlgorithmParams):number {
+        let {nextT, beginValue, valueChange, actionDuration} = params;
+        const newValue = valueChange * (Math.pow((nextT/actionDuration-1),5) + 1) + beginValue;
+        return newValue;
+    }
     update(
-        params:TweenAtTimeParams,
-    ):(typeof this.obj) {
-        const newParams = this.setParams(params);
-        let { nextT, beginValue, valueChange, actionDuration } = newParams;
-        // super.update({ t: nextT })
-        let newValue = valueChange * (Math.pow((nextT/actionDuration-1),5) + 1) + beginValue;
-
-        if (!this.checkIfFinished(nextT, actionDuration)) {
-            this.obj[this.propertyToChange] = newValue;
-        }
-        return this.obj;
+        params: TweenAtTimeParams|null|undefined = null,
+    ): (typeof this.obj) {
+        return super.update(params,this.tweenAlgorithm)
     }
 }
 export default EaseOutQuinticTween;
