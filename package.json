@@ -1,6 +1,6 @@
 {
   "name": "motion-and-tween",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "type": "module",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
@@ -94,6 +94,6 @@
     "url": "https://www.ricksegrest.com"
   },
   "dependencies": {
-    "es-vector-math": "^0.0.5"
+    "es-vector-math": "^0.0.6"
   }
 }
