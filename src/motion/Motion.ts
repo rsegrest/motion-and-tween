@@ -1,8 +1,8 @@
-
 import RealWorldTimer from "../timing/RealWorldTimer.js";
-import {
+import type {
+    TweenAlgorithmParams,
+    TweenAtTimeParams,
     TweenForDurationParams,
-    type TweenAtTimeParams,
 } from "../tween/Tween.js";
 
 export interface MotionProps {
@@ -17,13 +17,10 @@ export class Motion {
     protected propertyToChange: string;
     protected _beginValue: number;
     protected _actionDuration: number;
-    protected _listeners: any[];
-    protected _currentTime: number;
-    protected _prevPos: any;
-    protected _pos: any;
+    protected _currentTime: number = 0;
     protected _isLooping: boolean = false;
-    protected _startTime: number;
-    protected _valueChange: number | null = null;
+    protected _isPlaying: boolean = true;
+    protected _valueChange: number;
 
     constructor({
         obj,
@@ -34,57 +31,37 @@ export class Motion {
     }: MotionProps) {
         this.obj = obj;
         this.propertyToChange = propertyToChange;
-        this._beginValue = beginValue;
-        this._actionDuration = actionDuration;
-        this._listeners = [];
-        this.addListener(this);
-        this.start();
-        this._currentTime = 0;
-        this._prevPos = null;
-        this._pos = beginValue;
-        this._startTime = RealWorldTimer.getElapsedTime();
-        this._valueChange = valueChange;
+        this._beginValue = beginValue ?? 0;
+        this._actionDuration = actionDuration ?? 0;
+        this._valueChange = valueChange ?? 0;
     }
     public getElapsedTime() {
         return RealWorldTimer.getElapsedTime();
     }
     public start() {
         this.rewind();
-        this.addListener(this);
+        this._isPlaying = true;
     }
     public stop() {
-        this.removeListener(this);
+        this._isPlaying = false;
     }
     public resume() {
-        this.addListener(this);
+        this._isPlaying = true;
     }
-    public rewind(t: number = this._currentTime) {
-        this._currentTime = !t ? 1 : t;
-        this.update();
+    public getIsPlaying() {
+        return this._isPlaying;
     }
-    protected addListener(listener: any) {
-        this._listeners.push(listener);
+    public rewind(t: number = 0) {
+        this.moveToTime(t, null);
     }
-
     public nextFrame() {
         this.setTime(this._currentTime + 1);
     }
     public prevFrame() {
         this.setTime(this._currentTime - 1);
     }
-    setTime(t: number) {
-        if (t > this._actionDuration) {
-            if (this._isLooping) {
-                this.rewind(t - this._actionDuration);
-            } else {
-                this.stop();
-            }
-        } else if (t < 0) {
-            this.rewind();
-        } else {
-            this._currentTime = t;
-        }
-        this.update();
+    public setTime(t: number) {
+        this.moveToTime(t, null);
     }
     public getTime() {
         return this._currentTime;
@@ -125,58 +102,49 @@ export class Motion {
             | undefined
             | TweenAtTimeParams
             | TweenForDurationParams = null,
-    ): {
-        lastT: number;
-        nextT: number;
-        beginValue: number;
-        valueChange: number;
-        actionDuration: number;
-    } {
-        let lastT, nextT, beginValue, valueChange, actionDuration;
-        if (params) {
-            if (params.beginValue) beginValue = params.beginValue;
-            if (params.valueChange) valueChange = params.valueChange;
-        }
-        lastT = this._currentTime;
-        if (!params) {
-            lastT = this._currentTime;
-            nextT = this._currentTime + 1;
-            beginValue = this._beginValue;
-            valueChange = this._valueChange;
-            actionDuration = this._actionDuration;
-        } else {
-            if (params.hasOwnProperty("t")) {
-                nextT = (params as TweenAtTimeParams).t;
-            }
-            if (!beginValue) {
-                beginValue = this._beginValue;
-            }
-            if (!valueChange) {
-                valueChange = this._valueChange;
-            }
-            if (!actionDuration) {
-                actionDuration = this._actionDuration;
-            }
-        }
-        return { lastT, nextT, beginValue, valueChange, actionDuration };
+    ): Required<TweenAlgorithmParams> {
+        const requestedTime = params && "t" in params ? params.t : null;
+        const requestedDuration =
+            params && "actionDuration" in params ? params.actionDuration : null;
+        return {
+            lastT: this._currentTime,
+            nextT: requestedTime ?? this._currentTime + 1,
+            beginValue: params?.beginValue ?? this._beginValue,
+            valueChange: params?.valueChange ?? this._valueChange,
+            actionDuration: requestedDuration ?? this._actionDuration,
+        };
     }
-    // Override this method
+    // Without a time, update() advances one frame while playing; with a time, it seeks there even when stopped.
     public update(
         params: TweenAtTimeParams | undefined | null = null,
     ): typeof this.obj {
-        if (params) {
-            this._currentTime = params.t;
-        } else {
-            this._currentTime += 1;
+        const requestedTime = params?.t;
+        if (requestedTime !== null && requestedTime !== undefined) {
+            this.moveToTime(requestedTime, params ?? null);
+        } else if (this._isPlaying) {
+            this.moveToTime(this._currentTime + 1, params ?? null);
         }
         return this.obj;
     }
-    protected removeListener(listener: any) {
-        this._listeners = this._listeners.filter((l) => l !== listener);
+    protected moveToTime(t: number, overrides: TweenAtTimeParams | null) {
+        if (t > this._actionDuration && !this._isLooping) {
+            this.stop();
+        }
+        this._currentTime = this.resolveTime(t);
+        this.renderCurrentTime(overrides);
     }
+    protected resolveTime(t: number): number {
+        if (t < 0) return 0;
+        if (t <= this._actionDuration) return t;
+        if (!this._isLooping) return this._actionDuration;
+        return this._actionDuration > 0 ? t % this._actionDuration : 0;
+    }
+    // Override to apply the value for the current time to the target object.
+    protected renderCurrentTime(_overrides: TweenAtTimeParams | null): void {}
+
     public toString() {
         return `Motion[obj=${JSON.stringify(this.obj)}, prop=${JSON.stringify(this.propertyToChange)},\
- _beginValue=${this._beginValue}, _duration=${this._actionDuration}]`; // , useSeconds=${this.useSeconds}]`;
+ _beginValue=${this._beginValue}, _duration=${this._actionDuration}]`;
     }
 }
 export default Motion;

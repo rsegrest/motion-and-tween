@@ -6,12 +6,13 @@ export interface TweenChangeProps extends MotionProps {
 export interface TweenFinishProps extends MotionProps {
     finishValue?: number | undefined;
 }
+export type TweenProps = TweenChangeProps | TweenFinishProps;
 export interface TweenAlgorithmParams {
-    nextT?: number | null;
-    lastT?: number | null | undefined;
-    beginValue?: number | null | undefined;
-    valueChange?: number | null | undefined;
-    actionDuration?: number | null | undefined;
+    nextT: number;
+    lastT?: number;
+    beginValue: number;
+    valueChange: number;
+    actionDuration: number;
 }
 export interface TweenAtTimeParams {
     t: number | null | undefined;
@@ -26,76 +27,51 @@ export interface TweenForDurationParams {
 
 export class Tween extends Motion {
     protected isComplete: boolean = false;
-    protected funcName: string = "";
+    protected funcName: string;
     protected _finishValue: number = 0;
 
-    constructor(params: TweenChangeProps | TweenFinishProps, funcName: string) {
-        super({
-            obj: params.obj,
-            propertyToChange: params.propertyToChange,
-            beginValue: params.beginValue,
-            actionDuration: params.actionDuration,
-        });
-        if (params.hasOwnProperty("valueChange")) {
-            this._valueChange = (params as TweenChangeProps).valueChange;
-            this._finishValue = this._beginValue + this._valueChange;
-        } else if (params.hasOwnProperty("finishValue")) {
-            const fv = (params as TweenFinishProps).finishValue;
-            this._finishValue = fv;
-            this._valueChange = fv - this._beginValue;
+    constructor(params: TweenProps, funcName: string) {
+        super(params);
+        const hasValueChange =
+            "valueChange" in params && params.valueChange != null;
+        if (!hasValueChange && "finishValue" in params && params.finishValue != null) {
+            this.setFinish(params.finishValue);
+        } else {
+            this._finishValue = this.calcFinish();
         }
-        this.isComplete = false;
         this.funcName = funcName;
     }
-    checkIfFinished(t: number, actionDuration: number): boolean {
-        if (t > actionDuration) {
-            this.isComplete = true;
-            this.obj[this.propertyToChange] = this._finishValue;
-            return true;
-        }
-        return false;
+    protected renderCurrentTime(overrides: TweenAtTimeParams | null): void {
+        const params = this.expandParams({ ...overrides, t: this._currentTime });
+        this.isComplete = params.nextT >= params.actionDuration;
+        this.obj[this.propertyToChange] = this.calculateValue(params);
     }
-    public update(
-        params: TweenAtTimeParams | undefined | null = null,
-        tweenAlgo: Function | null = null,
-    ) {
-        let newParams = this.expandParams(params);
-        if (tweenAlgo) {
-            const newValue = tweenAlgo(newParams);
-            if (
-                !this.checkIfFinished(newParams.nextT, newParams.actionDuration)
-            ) {
-                this.obj[this.propertyToChange] = newValue;
-            }
+    // Clamping to the endpoints guarantees exact begin/finish values, which some easing formulas only approximate.
+    protected calculateValue(params: TweenAlgorithmParams): number {
+        if (params.nextT <= 0) return params.beginValue;
+        if (params.nextT >= params.actionDuration) {
+            return params.beginValue + params.valueChange;
         }
-        super.update(params);
-        return this.obj;
+        return this.tweenAlgorithm(params);
     }
     // override
-    tweenAlgorithm(params: TweenAlgorithmParams): number {
-        let newValue = 0;
-        return newValue;
+    tweenAlgorithm(_params: TweenAlgorithmParams): number {
+        return 0;
     }
-    // TODO: Test/Verify or remove
-    continueTo(finish: number, interimDuration: number) {
+    continueTo(finish: number, interimDuration?: number) {
         this.setBegin(this.getPosition());
         this.setFinish(finish);
-        if (!interimDuration) {
+        if (interimDuration) {
             this.setActionDuration(interimDuration);
         }
         this.start();
     }
-    // TODO: Test/Verify or remove
     yoyo() {
         this.continueTo(this.getBegin(), this.getActionDuration());
     }
-    // TODO: Test/Verify or remove
-    getPosition(t?: number) {
-        if (!t) {
-            t = this._currentTime;
-        }
-        let returnValue = this._pos;
-        return returnValue;
+    getPosition(t?: number): number {
+        const params = this.expandParams({ t: t ?? this._currentTime });
+        return this.calculateValue(params);
     }
 
     setChange(change: number) {

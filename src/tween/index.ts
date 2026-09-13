@@ -10,6 +10,7 @@ import * as CubicTween from "./cubic/index.js";
 import Tween, {
   TweenChangeProps,
   TweenFinishProps,
+  TweenProps,
   TweenAlgorithmParams,
   TweenAtTimeParams,
   TweenForDurationParams,
@@ -30,6 +31,7 @@ export {
   TweenTypes,
   TweenChangeProps,
   TweenFinishProps,
+  TweenProps,
   TweenAlgorithmParams,
   TweenAtTimeParams,
   TweenForDurationParams,

@@ -99,9 +99,9 @@ describe("Tween", () => {
             expect(rect.toString()).toBe("Rectangle[x=5, y=10, w=50, h=50]");
             let r;
             r = linearTween.update();
-            // expect(r.x).toBe(6);
+            expect(r.x).toBe(6);
             r = linearTween.update();
-            // expect(r.x).toBe(7);
+            expect(r.x).toBe(7);
             r = linearTween.update();
             expect(r.x).toBe(8);
             r = linearTween.update();
@@ -163,13 +163,13 @@ describe("Tween", () => {
 
             let r;
             r = easeOutCircularTween.update({ t: 1 }) as Rectangle;
-            expect(r.x).toBeCloseTo(5.01);
-            r = easeOutCircularTween.update({ t: 2 }) as Rectangle; // , true) as Rectangle;
-            expect(r.x).toBeCloseTo(5.08);
+            expect(r.x).toBeCloseTo(9.359);
+            r = easeOutCircularTween.update({ t: 2 }) as Rectangle;
+            expect(r.x).toBeCloseTo(11);
             r = easeOutCircularTween.update({ t: 5 }) as Rectangle;
-            expect(r.x).toBeCloseTo(6.25);
+            expect(r.x).toBeCloseTo(13.66);
             r = easeOutCircularTween.update({ t: 9 }) as Rectangle;
-            expect(r.x).toBeCloseTo(12.29);
+            expect(r.x).toBeCloseTo(14.95);
             r = easeOutCircularTween.update({ t: 11 }) as Rectangle;
             expect(r.x).toBe(15);
         });

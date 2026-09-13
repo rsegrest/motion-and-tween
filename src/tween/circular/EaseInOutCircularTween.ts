@@ -1,11 +1,7 @@
-import Tween, {
-    TweenAlgorithmParams,
-    TweenAtTimeParams,
-    TweenChangeProps,
-} from "../Tween.js";
+import Tween, { TweenAlgorithmParams, TweenProps } from "../Tween.js";
 
 export class EaseInOutCircularTween extends Tween {
-    constructor(params: TweenChangeProps) {
+    constructor(params: TweenProps) {
         super(params, "EaseInOutCircularTween");
     }
     tweenAlgorithm(params: TweenAlgorithmParams): number {
@@ -25,9 +21,6 @@ export class EaseInOutCircularTween extends Tween {
                 (beginValue + valueChange / 2);
         }
         return newValue;
-    }
-    update(params: TweenAtTimeParams | null = null): typeof this.obj {
-        return super.update(params, this.tweenAlgorithm);
     }
 }
 export default EaseInOutCircularTween;

@@ -1,11 +1,7 @@
-import Tween, {
-    TweenAlgorithmParams,
-    TweenAtTimeParams,
-    TweenChangeProps,
-} from "../Tween.js";
+import Tween, { TweenAlgorithmParams, TweenProps } from "../Tween.js";
 
 export class EaseInSinusoidalTween extends Tween {
-    constructor(params: TweenChangeProps) {
+    constructor(params: TweenProps) {
         super(params, "EaseInSinusoidalTween");
     }
     tweenAlgorithm(params: TweenAlgorithmParams): number {
@@ -15,11 +11,6 @@ export class EaseInSinusoidalTween extends Tween {
                 (1 - Math.cos((nextT / actionDuration) * (Math.PI / 2))) +
             beginValue;
         return newValue;
-    }
-    update(
-        params: TweenAtTimeParams | null | undefined = null,
-    ): typeof this.obj {
-        return super.update(params, this.tweenAlgorithm);
     }
 }
 export default EaseInSinusoidalTween;

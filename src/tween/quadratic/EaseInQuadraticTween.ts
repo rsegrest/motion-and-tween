@@ -1,11 +1,7 @@
-import Tween, {
-    TweenAlgorithmParams,
-    TweenAtTimeParams,
-    TweenChangeProps,
-} from "../Tween.js";
+import Tween, { TweenAlgorithmParams, TweenProps } from "../Tween.js";
 
 export class EaseInQuadraticTween extends Tween {
-    constructor(params: TweenChangeProps) {
+    constructor(params: TweenProps) {
         super(params, "EaseInQuadraticTween");
     }
     tweenAlgorithm(params: TweenAlgorithmParams): number {
@@ -13,9 +9,6 @@ export class EaseInQuadraticTween extends Tween {
         const timeStep = nextT / actionDuration;
         const newValue = valueChange * Math.pow(timeStep, 2) + beginValue;
         return newValue;
-    }
-    update(params: TweenAtTimeParams | null = null): typeof this.obj {
-        return super.update(params, this.tweenAlgorithm);
     }
 }
 export default EaseInQuadraticTween;
