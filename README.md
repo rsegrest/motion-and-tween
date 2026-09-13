@@ -78,3 +78,9 @@ npm run build  # compiles to dist/
 ## Feedback
 
 Bug reports and ideas are welcome at https://github.com/rsegrest/motion-and-tween/issues.
+
+## License
+
+[MIT](./LICENSE) © Rick Segrest
+
+The easing equations are ports of Robert Penner's easing equations, used under the BSD License. See [THIRD-PARTY-NOTICES](./THIRD-PARTY-NOTICES).

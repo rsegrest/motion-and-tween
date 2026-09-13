@@ -5,7 +5,8 @@
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "THIRD-PARTY-NOTICES"
   ],
   "exports": {
     ".": {
@@ -85,6 +86,7 @@
     "typescript": "^5.7.2"
   },
   "description": "Frame-based motion and Robert Penner-style easing tweens for any JavaScript object property (TypeScript, ES modules).",
+  "license": "MIT",
   "author": {
     "name": "Rick Segrest",
     "email": "rsegrest77@gmail.com",
